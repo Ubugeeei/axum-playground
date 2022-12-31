@@ -2,6 +2,13 @@ use std::net::SocketAddr;
 
 use axum::{extract::Extension, Router};
 
+use crate::{
+    di::modules::Modules,
+    domain::root::{
+        route::create_root_route, todo::routes::create_todo_route, user::routes::create_user_route,
+    },
+};
+
 mod di;
 mod domain;
 
@@ -11,12 +18,12 @@ async fn main() {
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
     tracing::debug!("listening on {}", addr);
 
-    let modules = di::modules::Modules::new().await;
+    let modules = Modules::new().await;
 
     let app = Router::new()
-        .nest("/", domain::root::route::create_root_route())
-        .nest("/user", domain::root::user::routes::create_user_route())
-        .nest("/todo", domain::root::todo::routes::create_user_route())
+        .nest("/", create_root_route())
+        .nest("/users", create_user_route())
+        .nest("/todos", create_todo_route())
         .layer(Extension(modules));
 
     // boot

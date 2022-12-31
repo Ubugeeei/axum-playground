@@ -1,6 +1,8 @@
-use crate::domain::root::{todo::repository::TodoRepository, user::repository::UserRepository};
+use crate::domain::root::{
+    todo::interface::TodoRepositoryInterface, user::interface::UserRepositoryInterface,
+};
 
-pub trait ModulesInterface {
-    fn user_repository(&self) -> &UserRepository;
-    fn todo_repository(&self) -> &TodoRepository;
+pub trait ModulesInterface<T: UserRepositoryInterface, U: TodoRepositoryInterface> {
+    fn user_repository(&self) -> &T;
+    fn todo_repository(&self) -> &U;
 }

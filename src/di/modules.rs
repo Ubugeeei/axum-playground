@@ -17,7 +17,7 @@ impl Modules {
     }
 }
 
-impl ModulesInterface for Modules {
+impl ModulesInterface<UserRepository, TodoRepository> for Modules {
     fn user_repository(&self) -> &UserRepository {
         &self.user_repository
     }
